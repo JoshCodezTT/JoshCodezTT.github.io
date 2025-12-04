@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Joshua Legere – Portfolio</title>
+
+  <!-- Tailwind output (built from src/input.css) -->
+  <link rel="stylesheet" href="dist/output.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    html { scroll-behavior: smooth; }
+    
+    /* Animated gradient background - Dark Blue theme */
+    body {
+      background: linear-gradient(135deg, #0a0e27 0%, #0f172a 50%, #1e293b 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    /* Blue spotlight */
+    #spotlight { 
+      pointer-events: none; 
+      position: fixed; 
+      inset: 0; 
+      z-index: 0; 
+      opacity: .7; 
+      transition: opacity .2s linear;
+      background: radial-gradient(600px circle at var(--x) var(--y),
+        rgba(59, 130, 246, 0.12),
+        rgba(14, 165, 233, 0.08),
+        transparent 70%);
+    }
+    
+    .page-wrap { position: relative; z-index: 10; }
+    
+    /* Floating particles - Blue */
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: rgba(59, 130, 246, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float 20s infinite ease-in-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+    }
+    
+    /* Glowing text effect - Blue */
+    .glow-text {
+      text-shadow: 0 0 20px rgba(59, 130, 246, 0.5),
+                   0 0 40px rgba(59, 130, 246, 0.3);
+    }
+    
+    /* Animated gradient text - Blue/Cyan */
+    .gradient-text {
+      background: linear-gradient(90deg, #3b82f6, #0ea5e9, #06b6d4, #0ea5e9, #3b82f6);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientFlow 3s linear infinite;
+      padding-bottom: 0.1em;
+      line-height: 1.2;
+    }
+    
+    @keyframes gradientFlow {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    
+    /* Card hover effects with color */
+    .project-card {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+      transition: left 0.5s;
+    }
+    
+    .project-card:hover::before {
+      left: 100%;
+    }
+    
+    /* Pulsing accent - Blue */
+    .pulse-glow {
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); }
+    }
+    
+    /* Skill card animations */
+    .skill-card {
+      transition: all 0.3s ease;
+    }
+    
+    .skill-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+    }
+  </style>
+</head>
+<body class="text-gray-200 font-sans antialiased">
+
+  <!-- Colorful spotlight element -->
+  <div id="spotlight"></div>
+  
+  <!-- Floating particles -->
+  <div id="particles"></div>
+
+  <div class="page-wrap">
+    <!-- Header with gradient accent -->
+    <header class="max-w-5xl mx-auto px-6 py-10 flex items-start justify-between">
+      <div>
+        <div class="mb-2 text-gray-300 flex items-center gap-2">
+          <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+          Hello, my name is
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight">
+          <span id="typed-name" class="inline-block gradient-text"></span>
+          <span id="cursor" class="inline-block text-blue-400">▌</span>
+        </h1>
+        <p id="subtitle" class="text-gray-300 mt-3 text-lg">
+          <span class="text-blue-400 font-semibold">AI Automation</span> · 
+          <span class="text-sky-400 font-semibold">Developer</span> · 
+          <span class="text-cyan-400 font-semibold">Product Engineer</span>
+        </p>
+      </div>
+
+      <nav class="hidden md:flex gap-6 text-gray-300">
+        <a href="#about" class="hover:text-blue-400 transition-colors">About</a>
+        <a href="#projects" class="hover:text-sky-400 transition-colors">Projects</a>
+        <a href="#skills" class="hover:text-cyan-400 transition-colors">Skills</a>
+        <a href="#education" class="hover:text-blue-300 transition-colors">Education</a>
+        <a href="#contact" class="hover:text-sky-300 transition-colors">Contact</a>
+      </nav>
+    </header>
+
+    <!-- Main content -->
+    <main class="max-w-5xl mx-auto px-6 pb-24 space-y-20">
+
+      <!-- About -->
+      <section id="about" class="fade-in">
+        <div class="relative">
+          <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl opacity-20 blur-xl"></div>
+          <div class="relative bg-slate-900/50 backdrop-blur-sm rounded-2xl p-8 border border-blue-500/20">
+            <h2 class="text-3xl font-bold text-white mb-4 flex items-center gap-3">
+              <span class="w-1 h-8 bg-gradient-to-b from-blue-400 to-cyan-400 rounded-full"></span>
+              About
+            </h2>
+            <p class="text-gray-300 max-w-3xl leading-relaxed text-lg">
+              I’m a developer who builds polished, reliable AI-driven tools and automation systems. As an AI-Accelerated Product Engineer, I work alongside AI to design and ship products with real utility and strong UX. I love the intersection of <span class="text-blue-400 font-semibold">AI</span> + <span class="text-sky-400 font-semibold">Design</span> + <span class="text-cyan-400 font-semibold">Engineering</span> which turns ideas into functional systems people actually rely on. I’m currently studying Computing at SBCS TT while focused on delivering real results.
+            </p>
+
+            <div class="mt-8 flex gap-4">
+              <a href="#projects" class="group relative inline-block px-6 py-3 rounded-full border-2 border-blue-500 text-white hover:bg-blue-500 transition-all duration-300 font-semibold">
+                <span class="relative z-10">See projects</span>
+                <div class="absolute inset-0 rounded-full bg-blue-500 opacity-0 group-hover:opacity-20 blur transition-opacity"></div>
+              </a>
+              <a href="#contact" class="group relative inline-block px-6 py-3 rounded-full border-2 border-cyan-500 text-white hover:bg-cyan-500 transition-all duration-300 font-semibold">
+                <span class="relative z-10">Contact me</span>
+                <div class="absolute inset-0 rounded-full bg-cyan-500 opacity-0 group-hover:opacity-20 blur transition-opacity"></div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-3xl font-bold text-white fade-in flex items-center gap-3">
+            <span class="w-1 h-8 bg-gradient-to-b from-sky-400 to-cyan-400 rounded-full"></span>
+            Projects
+          </h2>
+          <button onclick="window.updateProjectsSection?.()" 
+                  class="text-sm text-gray-300 hover:text-white transition-all px-4 py-2 rounded-full border-2 border-sky-500/50 hover:border-sky-400 hover:bg-sky-500/10 font-semibold">
+            Refresh
+          </button>
+        </div>
+        <div class="mt-2 grid gap-6 grid-cols-1 md:grid-cols-2">
+          <!-- Projects will be auto-populated here -->
+          <article class="project-card fade-in bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 hover:border-blue-400/50 transition-all duration-300 cursor-pointer">
+            <h3 class="text-xl font-bold text-white mb-2">AI Customer Support Bot</h3>
+            <p class="text-gray-300 mt-2">Automated support agent trained on business FAQs & documents.</p>
+            <div class="mt-4 flex gap-2">
+              <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30">AI</span>
+              <span class="px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 text-xs font-semibold border border-sky-500/30">Python</span>
+            </div>
+          </article>
+
+          <article class="project-card fade-in bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-sky-500/20 hover:border-sky-400/50 transition-all duration-300 cursor-pointer">
+            <h3 class="text-xl font-bold text-white mb-2">Self-Updating Portfolio</h3>
+            <p class="text-gray-300 mt-2">Pipeline that scrapes repos & auto-updates project metadata for the site.</p>
+            <div class="mt-4 flex gap-2">
+              <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-semibold border border-cyan-500/30">Automation</span>
+              <span class="px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 text-xs font-semibold border border-sky-500/30">JavaScript</span>
+            </div>
+          </article>
+
+          <article class="project-card fade-in bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-cyan-500/20 hover:border-cyan-400/50 transition-all duration-300 cursor-pointer">
+            <h3 class="text-xl font-bold text-white mb-2">AI Workflow Engine</h3>
+            <p class="text-gray-300 mt-2">Custom automation pipelines for operations, data entry and outreach.</p>
+            <div class="mt-4 flex gap-2">
+              <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30">AI</span>
+              <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-semibold border border-cyan-500/30">Automation</span>
+            </div>
+          </article>
+
+          <article class="project-card fade-in bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-slate-500/20 hover:border-slate-400/50 transition-all duration-300 cursor-pointer">
+            <h3 class="text-xl font-bold text-white mb-2">Solo Builder Tools</h3>
+            <p class="text-gray-300 mt-2">A set of small tools I use to ship prototypes quickly.</p>
+            <div class="mt-4 flex gap-2">
+              <span class="px-3 py-1 rounded-full bg-slate-500/20 text-slate-300 text-xs font-semibold border border-slate-500/30">Tools</span>
+              <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30">React</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills">
+        <h2 class="text-3xl font-bold text-white mb-8 fade-in flex items-center gap-3">
+          <span class="w-1 h-8 bg-gradient-to-b from-cyan-400 to-blue-400 rounded-full"></span>
+          Skills
+        </h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="skill-card bg-gradient-to-br from-blue-500/10 to-blue-500/5 backdrop-blur-sm p-6 rounded-xl border border-blue-500/30">
+            <h4 class="font-bold text-white text-xl mb-2">Frontend</h4>
+            <p class="text-gray-300">HTML, CSS, JavaScript, React, Next.js</p>
+            <div class="mt-4 h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-blue-500 to-sky-500 rounded-full" style="width: 85%; animation: fillBar 1.5s ease-out;"></div>
+            </div>
+          </div>
+          
+          <div class="skill-card bg-gradient-to-br from-sky-500/10 to-sky-500/5 backdrop-blur-sm p-6 rounded-xl border border-sky-500/30">
+            <h4 class="font-bold text-white text-xl mb-2">AI & Backend</h4>
+            <p class="text-gray-300">Python, FastAPI, OpenAI, automation</p>
+            <div class="mt-4 h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-sky-500 to-cyan-500 rounded-full" style="width: 90%; animation: fillBar 1.5s ease-out 0.2s both;"></div>
+            </div>
+          </div>
+          
+          <div class="skill-card bg-gradient-to-br from-cyan-500/10 to-cyan-500/5 backdrop-blur-sm p-6 rounded-xl border border-cyan-500/30">
+            <h4 class="font-bold text-white text-xl mb-2">Tools</h4>
+            <p class="text-gray-300">Playwright, GitHub, Docker</p>
+            <div class="mt-4 h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" style="width: 80%; animation: fillBar 1.5s ease-out 0.4s both;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section id="education">
+        <h2 class="text-3xl font-bold text-white mb-8 fade-in flex items-center gap-3">
+          <span class="w-1 h-8 bg-gradient-to-b from-blue-400 to-cyan-400 rounded-full"></span>
+          Education
+        </h2>
+        <div class="relative">
+          <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl opacity-20 blur-xl"></div>
+          <div class="relative bg-slate-900/50 backdrop-blur-sm p-8 rounded-2xl border border-blue-500/20">
+            <div class="flex items-start gap-4">
+              <div>
+                <h3 class="text-2xl font-bold text-white">BSc. (Hons) Computing</h3>
+                <p class="text-blue-400 font-semibold mt-1">SBCS / University of Greenwich</p>
+                <p class="text-gray-400 mt-2 flex items-center gap-2">
+                  <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  Sept 2024 – Apr 2028 (In Progress)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="space-y-6">
+        <h2 class="text-3xl font-bold text-white fade-in flex items-center gap-3">
+          <span class="w-1 h-8 bg-gradient-to-b from-sky-400 to-blue-400 rounded-full"></span>
+          Get in Touch
+        </h2>
+        <div class="relative">
+          <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl opacity-20 blur-xl"></div>
+          <div class="relative bg-slate-900/50 backdrop-blur-sm p-8 rounded-2xl border border-blue-500/20">
+            <p class="text-gray-300 text-lg mb-6 fade-in">
+              Want to build something or automate your workflow? Let's make it happen!
+            </p>
+            <a href="mailto:jkvlegere@gmail.com" 
+               class="inline-block bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 px-8 py-4 rounded-full text-white font-bold text-lg shadow-lg shadow-blue-500/50 hover:shadow-blue-500/70 transition-all duration-300 pulse-glow">
+              Contact Me
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="border-t border-slate-800 mt-12 py-8 text-center text-gray-500">
+      <div class="flex items-center justify-center gap-2 mb-2">
+        <span>© <span id="year"></span> Joshua Legere</span>
+      </div>
+      <p class="text-sm text-gray-600">Built with Tailwind, Animation & Automation</p>
+    </footer>
+  </div>
+
+  <style>
+    @keyframes fillBar {
+      from { width: 0; }
+    }
+  </style>
+
+  <!-- Auto-update projects script -->
+  <script>
+    const GITHUB_USERNAME = 'JoshCodezTT'; // REPLACE THIS!
+    const API_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos`;
+
+    const PROJECT_KEYWORDS = {
+      ai: ['ai', 'gpt', 'openai', 'machine-learning', 'ml', 'bot', 'assistant'],
+      automation: ['automation', 'scraper', 'playwright', 'selenium', 'pipeline'],
+      web: ['react', 'next', 'vue', 'website', 'portfolio', 'frontend'],
+      tools: ['tool', 'utility', 'cli', 'helper']
+    };
+
+    const PROJECT_EMOJIS = {
+      ai: '',
+      automation: '',
+      web: '',
+      tools: '',
+      other: ''
+    };
+
+    const CATEGORY_COLORS = {
+      ai: 'blue',
+      automation: 'cyan',
+      web: 'sky',
+      tools: 'slate',
+      other: 'gray'
+    };
+
+    async function fetchGitHubRepos() {
+      try {
+        const response = await fetch(`${API_URL}?sort=updated&per_page=20`);
+        if (!response.ok) throw new Error('Failed to fetch repos');
+        return await response.json();
+      } catch (error) {
+        console.error('Error fetching GitHub repos:', error);
+        return [];
+      }
+    }
+
+    function categorizeProject(repo) {
+      const text = `${repo.description || ''} ${repo.topics?.join(' ') || ''}`.toLowerCase();
+      for (const [category, keywords] of Object.entries(PROJECT_KEYWORDS)) {
+        if (keywords.some(keyword => text.includes(keyword))) return category;
+      }
+      return 'other';
+    }
+
+    function processRepos(repos) {
+      return repos
+        .filter(repo => !repo.fork && !repo.archived)
+        .filter(repo => repo.stargazers_count > 0 || repo.description)
+        .slice(0, 6)
+        .map(repo => ({
+          name: repo.name.split('-').map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1)
+          ).join(' '),
+          description: repo.description || 'No description available',
+          url: repo.html_url,
+          stars: repo.stargazers_count,
+          language: repo.language,
+          topics: repo.topics || [],
+          category: categorizeProject(repo),
+          updated: new Date(repo.updated_at)
+        }));
+    }
+
+    function generateProjectHTML(projects) {
+      return projects.map(project => {
+        const color = CATEGORY_COLORS[project.category];
+        
+        return `
+        <article class="project-card fade-in visible bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-${color}-500/20 hover:border-${color}-400/50 transition-all duration-300 cursor-pointer">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="text-xl font-bold text-white">${project.name}</h3>
+            ${project.stars > 0 ? `<span class="text-xs text-gray-400">⭐ ${project.stars}</span>` : ''}
+          </div>
+          <p class="text-gray-300 mt-2 mb-4">${project.description}</p>
+          <div class="flex items-center gap-2 text-xs flex-wrap">
+            ${project.language ? `
+              <span class="px-3 py-1 rounded-full bg-${color}-500/20 text-${color}-300 font-semibold border border-${color}-500/30">
+                ${project.language}
+              </span>
+            ` : ''}
+            ${project.topics.slice(0, 2).map(topic => `
+              <span class="px-3 py-1 rounded-full bg-${color}-500/20 text-${color}-300 font-semibold border border-${color}-500/30">
+                ${topic}
+              </span>
+            `).join('')}
+          </div>
+          <a href="${project.url}" target="_blank" rel="noopener noreferrer" 
+             class="inline-block mt-4 text-sm text-${color}-400 hover:text-${color}-300 transition-colors font-semibold">
+            View on GitHub →
+          </a>
+        </article>
+      `}).join('');
+    }
+
+    async function updateProjectsSection() {
+      const projectsGrid = document.querySelector('#projects .grid');
+      if (!projectsGrid) return;
+
+      projectsGrid.innerHTML = `
+        <div class="col-span-full text-center text-gray-400 py-8">
+          <div class="inline-block animate-spin text-4xl mb-4">⟳</div>
+          <p>Loading projects from GitHub...</p>
+        </div>
+      `;
+
+      const repos = await fetchGitHubRepos();
+      const projects = processRepos(repos);
+
+      if (projects.length === 0) {
+        projectsGrid.innerHTML = `
+          <div class="col-span-full text-center text-gray-400 py-8">
+            <p>No projects found. Check your GitHub username!</p>
+          </div>
+        `;
+        return;
+      }
+
+      projectsGrid.innerHTML = generateProjectHTML(projects);
+    }
+
+    window.updateProjectsSection = updateProjectsSection;
+
+    // Uncomment to auto-load projects on page load:
+     document.addEventListener('DOMContentLoaded', updateProjectsSection);
+  </script>
+
+  <!-- Core scripts: spotlight, typewriter, fade-in, particles -->
+  <script>
+    // ========== FLOATING PARTICLES ==========
+    function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.setProperty('--tx', (Math.random() - 0.5) * 1000 + 'px');
+        particle.style.setProperty('--ty', (Math.random() - 0.5) * 1000 + 'px');
+        particle.style.animationDelay = Math.random() * 20 + 's';
+        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+        container.appendChild(particle);
+      }
+    }
+    createParticles();
+
+    // ========== SPOTLIGHT ==========
+    let w = window.innerWidth, h = window.innerHeight;
+    let x = w / 2, y = h / 2;
+    let tx = x, ty = y;
+    const spot = document.getElementById('spotlight');
+
+    function updateWindowSize() {
+      w = window.innerWidth; h = window.innerHeight;
+    }
+    window.addEventListener('resize', updateWindowSize);
+
+    document.addEventListener('mousemove', (e) => {
+      tx = e.clientX;
+      ty = e.clientY;
+      if (spot) spot.style.opacity = '0.7';
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches[0]) {
+        tx = e.touches[0].clientX;
+        ty = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    function animateSpot() {
+      x += (tx - x) * 0.14;
+      y += (ty - y) * 0.14;
+      if (spot) {
+        spot.style.setProperty('--x', (x) + 'px');
+        spot.style.setProperty('--y', (y) + 'px');
+      }
+      requestAnimationFrame(animateSpot);
+    }
+    animateSpot();
+
+    let lastMove = Date.now();
+    document.addEventListener('mousemove', () => lastMove = Date.now());
+    setInterval(() => {
+      if (!spot) return;
+      if (Date.now() - lastMove > 2400) spot.style.opacity = '0.4';
+    }, 600);
+
+    // ========== TYPEWRITER (name) ==========
+    const name = "Joshua Legere";
+    const typed = document.getElementById('typed-name');
+    const cursor = document.getElementById('cursor');
+    let i = 0;
+    function typeName() {
+      if (i < name.length) {
+        typed.textContent += name.charAt(i);
+        i++;
+        setTimeout(typeName, 80);
+      } else {
+        setInterval(() => cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0', 600);
+      }
+    }
+    setTimeout(typeName, 450);
+
+    // ========== FADE-IN ON SCROLL ==========
+    const fadeEls = Array.from(document.querySelectorAll('.fade-in'));
+    const obs = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      }
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => obs.observe(el));
+
+    // ========== YEAR ==========
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- ========== ACTIVE MENU ON SCROLL ========== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('nav a');
+
+      function activateMenu() {
+        let current = '';
+
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 120;
+          if (scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('text-blue-400', 'text-sky-400', 'text-cyan-400', 'text-blue-300', 'text-sky-300');
+          link.classList.add('text-gray-300');
+
+          const href = link.getAttribute('href');
+          if (href.includes(current) && current) {
+            link.classList.remove('text-gray-300');
+            if (href === '#about') link.classList.add('text-blue-400');
+            else if (href === '#projects') link.classList.add('text-sky-400');
+            else if (href === '#skills') link.classList.add('text-cyan-400');
+            else if (href === '#education') link.classList.add('text-blue-300');
+            else if (href === '#contact') link.classList.add('text-sky-300');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', activateMenu);
+    });
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
